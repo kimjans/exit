@@ -7,9 +7,9 @@ var client = mysql.createConnection({
 	
 	host : 'localhost',
 	port : '3306',
-	user : 'ryu',
-	password : 'ryu',
-	database : 'user'
+	user : 'exit',
+	password : 'test',
+	database : 'exit_proj'
 	
 	
 });
@@ -28,10 +28,11 @@ client.connect(function(err){
 
 function insertData(){
 	
-	client.query('INSERT INTO store SET ?',{
+	client.query('INSERT INTO user SET ?',{
 		//storeid : 1,
-		userId : 2,
-		name : 'jans'
+		email: 'shai0827@gmail.com',
+		nick: 'shai',
+		level : 1
 		
 	}, function(err, rows){
 		
