@@ -8,28 +8,29 @@ SHOW WARNINGS;
 USE `exit_proj` ;
 
 -- -----------------------------------------------------
--- Table `board`
+-- Table `free_board`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `board` ;
+DROP TABLE IF EXISTS `free_board` ;
 
 SHOW WARNINGS;
-CREATE  TABLE IF NOT EXISTS `board` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `type` VARCHAR(45) CHARACTER SET 'utf8' NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `free_board` (
+  `idx` INT NOT NULL AUTO_INCREMENT ,
+  `cate` VARCHAR(20) CHARACTER SET 'utf8' NULL ,
   `title` VARCHAR(45) NULL ,
   `contents` MEDIUMTEXT NULL ,
-  `writer` VARCHAR(20) NOT NULL ,
-  `email` VARCHAR(45) NOT NULL ,
-  `date` DATETIME NOT NULL ,
-  `views` INT NULL DEFAULT 0 ,
+  `writer_nick` VARCHAR(20) NOT NULL ,
+  `writer_email` VARCHAR(45) NOT NULL ,
+  `writer_ip` VARCHAR(20) NOT NULL ,
+  `view_count` INT NOT NULL DEFAULT 0 ,
+  `recommand_count` SMALLINT NULL DEFAULT 0 ,
+  `report_count` TINYINT NULL DEFAULT 0 ,
+  `date` DATETIME NOT NULL DEFAULT getdate() ,
   `visible` TINYINT(1) NOT NULL DEFAULT TRUE ,
-  PRIMARY KEY (`id`) );
+  `blind` TINYINT(1) NOT NULL DEFAULT FALSE ,
+  PRIMARY KEY (`idx`) );
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `type_UNIQUE` ON `board` (`type` ASC) ;
-
-SHOW WARNINGS;
-CREATE UNIQUE INDEX `id_UNIQUE` ON `board` (`id` ASC) ;
+CREATE UNIQUE INDEX `idx_UNIQUE` ON `free_board` (`idx` ASC) ;
 
 SHOW WARNINGS;
 
@@ -40,15 +41,19 @@ DROP TABLE IF EXISTS `user` ;
 
 SHOW WARNINGS;
 CREATE  TABLE IF NOT EXISTS `user` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
+  `idx` INT NOT NULL AUTO_INCREMENT ,
   `email` VARCHAR(45) NOT NULL ,
   `nick` VARCHAR(20) NOT NULL ,
   `level` TINYINT NOT NULL DEFAULT 1 ,
-  PRIMARY KEY (`id`) )
+  `reg_type` VARCHAR(45) NOT NULL ,
+  `reg_date` DATETIME NOT NULL DEFAULT getdate() ,
+  `login_date` DATETIME NOT NULL DEFAULT getdate() ,
+  `blocked` TINYINT(1) NULL DEFAULT FALSE ,
+  PRIMARY KEY (`idx`) )
 DEFAULT CHARACTER SET = big5;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `id_UNIQUE` ON `user` (`id` ASC) ;
+CREATE UNIQUE INDEX `idx_UNIQUE` ON `user` (`idx` ASC) ;
 
 SHOW WARNINGS;
 CREATE UNIQUE INDEX `email_UNIQUE` ON `user` (`email` ASC) ;
@@ -59,38 +64,41 @@ CREATE UNIQUE INDEX `nick_UNIQUE` ON `user` (`nick` ASC) ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `comment`
+-- Table `comment_free_board`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `comment` ;
+DROP TABLE IF EXISTS `comment_free_board` ;
 
 SHOW WARNINGS;
-CREATE  TABLE IF NOT EXISTS `comment` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `board_id` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `comment_free_board` (
+  `idx` INT NOT NULL AUTO_INCREMENT ,
+  `board_idx` INT NOT NULL ,
+  `reply_idx` INT NULL DEFAULT NULL ,
   `commment` TEXT NOT NULL ,
-  `writer` VARCHAR(20) NOT NULL ,
-  `email` VARCHAR(45) NOT NULL ,
+  `writer_nick` VARCHAR(20) NOT NULL ,
+  `writer_email` VARCHAR(45) NOT NULL ,
+  `writer_ip` VARCHAR(20) NOT NULL ,
   `date` DATETIME NOT NULL ,
-  `reply_id` INT NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`, `board_id`) ,
+  `visible` TINYINT(1) NOT NULL DEFAULT TRUE ,
+  `blind` TINYINT(1) NOT NULL DEFAULT FALSE ,
+  PRIMARY KEY (`idx`, `board_idx`) ,
   CONSTRAINT `fk_comment_board`
-    FOREIGN KEY (`board_id` )
-    REFERENCES `board` (`id` )
+    FOREIGN KEY (`board_idx` )
+    REFERENCES `free_board` (`idx` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `id_UNIQUE` ON `comment` (`id` ASC) ;
+CREATE UNIQUE INDEX `idx_UNIQUE` ON `comment_free_board` (`idx` ASC) ;
 
 SHOW WARNINGS;
-CREATE INDEX `fk_comment_board_idx` ON `comment` (`board_id` ASC) ;
+CREATE INDEX `fk_comment_board_idx` ON `comment_free_board` (`board_idx` ASC) ;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `writer_UNIQUE` ON `comment` (`writer` ASC) ;
+CREATE UNIQUE INDEX `writer_UNIQUE` ON `comment_free_board` (`writer_nick` ASC) ;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `email_UNIQUE` ON `comment` (`email` ASC) ;
+CREATE UNIQUE INDEX `email_UNIQUE` ON `comment_free_board` (`writer_email` ASC) ;
 
 SHOW WARNINGS;
 USE `exit_proj` ;
