@@ -28,18 +28,15 @@ client.connect(function(err){
 });
 
 function insertData(){
-// PRIMARY-KEY 이므로 다시 추가시 에러 발생 가능성 농후	
+//UNIQUE 이므로 다시 추가시 에러 발생 가능성 농후	
 	client.query('INSERT INTO user SET ?',{
-		//storeid : 1,
 		email: 'shai0827@gmail.com',
 		nick: 'shai',
-		level : 1
-		
 	}, function(err, rows){
 		
 		if(err){
 			
-			console.log('insert Data error');
+			console.log('insert Data error:' + err);
 		}else{
 			
 			console.log('insert Data ok');

@@ -20,17 +20,23 @@ CREATE  TABLE IF NOT EXISTS `free_board` (
   `contents` MEDIUMTEXT NULL ,
   `writer_nick` VARCHAR(20) NOT NULL ,
   `writer_email` VARCHAR(45) NOT NULL ,
-  `writer_ip` VARCHAR(20) NOT NULL ,
-  `view_count` INT NOT NULL DEFAULT 0 ,
+  `writer_ip` VARCHAR(20) NULL ,
+  `view_count` INT NULL DEFAULT 0 ,
   `recommand_count` SMALLINT NULL DEFAULT 0 ,
   `report_count` TINYINT NULL DEFAULT 0 ,
-  `date` DATETIME NOT NULL DEFAULT getdate() ,
-  `visible` TINYINT(1) NOT NULL DEFAULT TRUE ,
-  `blind` TINYINT(1) NOT NULL DEFAULT FALSE ,
+  `date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ,
+  `visible` TINYINT(1) NULL DEFAULT TRUE ,
+  `blind` TINYINT(1) NULL DEFAULT FALSE ,
   PRIMARY KEY (`idx`) );
 
 SHOW WARNINGS;
 CREATE UNIQUE INDEX `idx_UNIQUE` ON `free_board` (`idx` ASC) ;
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `writer_nick_UNIQUE` ON `free_board` (`writer_nick` ASC) ;
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `writer_email_UNIQUE` ON `free_board` (`writer_email` ASC) ;
 
 SHOW WARNINGS;
 
@@ -44,10 +50,10 @@ CREATE  TABLE IF NOT EXISTS `user` (
   `idx` INT NOT NULL AUTO_INCREMENT ,
   `email` VARCHAR(45) NOT NULL ,
   `nick` VARCHAR(20) NOT NULL ,
-  `level` TINYINT NOT NULL DEFAULT 1 ,
-  `reg_type` VARCHAR(45) NOT NULL ,
-  `reg_date` DATETIME NOT NULL DEFAULT getdate() ,
-  `login_date` DATETIME NOT NULL DEFAULT getdate() ,
+  `level` TINYINT NULL DEFAULT 1 ,
+  `reg_type` VARCHAR(45) NULL ,
+  `reg_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ,
+  `login_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ,
   `blocked` TINYINT(1) NULL DEFAULT FALSE ,
   PRIMARY KEY (`idx`) )
 DEFAULT CHARACTER SET = big5;
@@ -73,13 +79,13 @@ CREATE  TABLE IF NOT EXISTS `comment_free_board` (
   `idx` INT NOT NULL AUTO_INCREMENT ,
   `board_idx` INT NOT NULL ,
   `reply_idx` INT NULL DEFAULT NULL ,
-  `commment` TEXT NOT NULL ,
+  `comment` TEXT NOT NULL ,
   `writer_nick` VARCHAR(20) NOT NULL ,
   `writer_email` VARCHAR(45) NOT NULL ,
-  `writer_ip` VARCHAR(20) NOT NULL ,
-  `date` DATETIME NOT NULL ,
-  `visible` TINYINT(1) NOT NULL DEFAULT TRUE ,
-  `blind` TINYINT(1) NOT NULL DEFAULT FALSE ,
+  `writer_ip` VARCHAR(20) NULL ,
+  `date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ,
+  `visible` TINYINT(1) NULL DEFAULT TRUE ,
+  `blind` TINYINT(1) NULL DEFAULT FALSE ,
   PRIMARY KEY (`idx`, `board_idx`) ,
   CONSTRAINT `fk_comment_board`
     FOREIGN KEY (`board_idx` )
@@ -95,10 +101,10 @@ SHOW WARNINGS;
 CREATE INDEX `fk_comment_board_idx` ON `comment_free_board` (`board_idx` ASC) ;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `writer_UNIQUE` ON `comment_free_board` (`writer_nick` ASC) ;
+CREATE UNIQUE INDEX `email_UNIQUE` ON `comment_free_board` (`writer_email` ASC) ;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `email_UNIQUE` ON `comment_free_board` (`writer_email` ASC) ;
+CREATE UNIQUE INDEX `writer_nick_UNIQUE` ON `comment_free_board` (`writer_nick` ASC) ;
 
 SHOW WARNINGS;
 USE `exit_proj` ;
