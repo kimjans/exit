@@ -19,6 +19,8 @@
     "express": "~3.3.4",
     "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
-    "mysql": "~2.0.0-alpha8"
+    "mysql": "~2.0.0-alpha8",
+    "passport": "~0.1.17",
+    "passport-google": "~0.3.0"
   }
 }
