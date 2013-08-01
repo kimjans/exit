@@ -7,5 +7,12 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %> testtt</p>
+    <%if(user){%>
+    	<%=user.email%>
+    	<a href="/logout">Sign Out with Google</a>
+    <%}else{%>
+    	<a href="/auth/google">Sign In with Google</a>
+    <%}%>
+    
   </body>
 </html>
